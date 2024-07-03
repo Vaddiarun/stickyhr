@@ -203,7 +203,7 @@ const Footer = () => {
       
 
       {/* Footer */}
-      <div className="my-8">
+      <div className="my-8 mb-0">
         <FooterContent />
       </div>
     </div>
@@ -212,7 +212,7 @@ const Footer = () => {
 
 const FooterContent = () => {
   return (
-    <p className="text-lg text-white font-thin mt-32">
+    <p className="text-lg text-white font-thin mt-28 p-10">
       ©2024 | Stickyhr Pvt. Ltd. Developed by{' '}
       <a
         href="https://www.thewebsort.com/"
