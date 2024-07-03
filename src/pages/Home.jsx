@@ -10,8 +10,14 @@ import image3 from "../assets/images/image3.png";
 import image4 from "../assets/images/image4.png";
 import image5 from "../assets/images/image5.png";
 import logoo from "../assets/images/logo.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/contact");
+  };
   return (
     <div className="min-w-screen overflow-x-hidden">
       <div className="bg-gradient-to-b from-white to-teal-700 h-auto">
@@ -25,7 +31,10 @@ export default function Home() {
             to save you time, reduce costs, and enhance the overall employee
             experience.
           </p>
-          <button className="bg-yellow p-4 rounded-3xl flex hover:scale-105 duration-300 gap-2">
+          <button
+            onClick={handleClick}
+            className="bg-yellow p-4 rounded-3xl flex hover:scale-105 duration-300 gap-2"
+          >
             Schedule A Demo <img src={image} alt="arrow" />
           </button>
         </div>

@@ -1,26 +1,31 @@
-
-import React , { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faYoutube, faFacebook, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { FaXTwitter } from 'react-icons/fa6';
 import { FaPhone, FaMapMarkerAlt, FaEnvelope } from "react-icons/fa";
 import logo from '../../assets/logo.png';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import emailjs from 'emailjs-com';
 
 const columns = [
   {
     title: 'Resources Blog',
     items: ['Blog', 'Case Studies', 'HR Webinar', 'HR Tank', 'HR Innovation'],
     marginLeft: 'md:ml-40',
+    path:"/resources"
   },
   {
     title: 'Products',
     items: ['Complete HR', 'Payroll Management', 'Attendance & Time Management', 'Performance Management', 'Compensation Management', 'Workflow Management', 'Recruitment', 'Travel & Expense Management'],
     marginLeft: 'md:ml-20',
+     path:"/products"
   },
   {
     title: 'Company',
     items: ['Pricing', 'About Us', 'Contact Us'],
     marginLeft: 'md:ml-40',
+
   },
   {
     title: '',
@@ -28,7 +33,6 @@ const columns = [
     marginLeft: 'md:ml-40',
   },
 ];
-
 
 const Footer = () => {
   const initialFormData = {
@@ -40,6 +44,7 @@ const Footer = () => {
 
   const [formData, setFormData] = useState(initialFormData);
   const [isTyping, setIsTyping] = useState(false); // State to track input focus
+  const form = useRef();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,8 +64,16 @@ const Footer = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    setFormData(initialFormData);
+
+    emailjs.sendForm('service_8csfy9e', 'template_02dvmih', form.current, 'SUDClEa8dJErqojnl')
+      .then((result) => {
+        console.log(result.text);
+        toast.success('Demo scheduled successfully!');
+        setFormData(initialFormData);
+      }, (error) => {
+        console.log(error.text);
+        toast.error('Failed to schedule demo. Please try again.');
+      });
   };
 
   return (
@@ -77,10 +90,10 @@ const Footer = () => {
             </p>
           </div>
           <div className="bg-customGreen text-black p-10 rounded-3xl w-full md:w-2/4 md:mr-20 mt-10 md:mt-0">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} ref={form} >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
                 <div>
-                  <input
+                  <input required
                     type="text"
                     name="name"
                     placeholder="Your Name*"
@@ -92,7 +105,7 @@ const Footer = () => {
                   />
                 </div>
                 <div>
-                  <input
+                  <input required
                     type="email"
                     name="email"
                     placeholder="Email*"
@@ -104,7 +117,7 @@ const Footer = () => {
                   />
                 </div>
                 <div>
-                  <input
+                  <input required
                     type="tel"
                     name="phone"
                     placeholder="Phone Number*"
@@ -116,7 +129,7 @@ const Footer = () => {
                   />
                 </div>
                 <div>
-                  <input
+                  <input required
                     type="text"
                     name="company"
                     placeholder="Company Name*"
@@ -128,20 +141,20 @@ const Footer = () => {
                   />
                 </div>
                 <div className="col-span-1 md:col-span-2 flex justify-center">
-                  <button
-                    type="submit" 
+                  <button 
+                    type="submit"
                     className="bg-yellow p-4 rounded-lg border border-black w-full md:w-2/4 text-black font-lato font-semibold"
                   >
-                    Schedule a Demo
+                    Submit
                   </button>
                 </div>
               </div>
             </form>
+            <ToastContainer />
           </div>
         </div>
       </div>
 
-  
       <div className="flex flex-col lg:flex-row justify-between items-start lg:ml-8">
         <div className="w-full lg:w-1/2 text-white p-10">
           <img src={logo} alt="Logo" className="h-14 max-w-[520px] mb-4 ml-10 mt-20" />
@@ -149,34 +162,32 @@ const Footer = () => {
             We are committed to helping you transform your HR processes and create a better workplace for your employees. Our HRMS is designed to save you time, reduce costs, and enhance the overall employee experience.
           </p>
         </div>
+      </div>
+
+      <div className="w-full lg:w-full text-white p-5 rounded-3xl mr-0 lg:mr-20">
+        <div className="h-px bg-customGray my-4 mx-4"></div>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:mt-10">
+          <div className="flex flex-col justify text-lg">
+            <p className='lg:font-roboto lg:text-lg lg:ml-20 lg:font-medium text-start ml-20'><FaPhone className="inline-block mr-4" />Contact Us </p>
+            <p className='font-lato font-extralight lg:ml-20 text-lg mt-2 text-start ml-20'>+91852741963</p>
+          </div>
+          <div className="flex flex-col justify">
+            <p className='font-roboto ml-20 text-left text-lg font-medium'>Reach Us <FaMapMarkerAlt className="inline-block ml-2" /></p>
+            <p className='font-lato font-extralight text-lg mt-2 leading-8 text-left ml-20'>Garuda Bhive Workspace,kuvempu bus station,Bengalore Karnataka-574369</p>
+          </div>
+          <div className="flex flex-col justify">
+            <p className='font-roboto lg:ml-40 text-lg text-left font-medium ml-20'> <FaEnvelope className="inline-block mr-4" />Mail Us</p>
+            <p className='font-lato font-extralight lg:ml-40 text-lg mt-2 text-left ml-20'>stickyhr@gmail.com</p>
+          </div>
+          <div className="flex lg:flex-wrap justify-end lg:justify-end gap-1 lg:mr-20 mt-8">
+            <FaXTwitter className="text-white text-3xl mx-4" />
+            <FontAwesomeIcon icon={faYoutube} className="text-white text-3xl mx-4" />
+            <FontAwesomeIcon icon={faFacebook} className="text-white text-3xl mx-4" />
+            <FontAwesomeIcon icon={faInstagram} className="text-white text-3xl mx-4" />
+            <FontAwesomeIcon icon={faLinkedin} className="text-white text-3xl mx-4" />
+          </div>
         </div>
-
-        <div className="w-full lg:w-full text-white p-5 rounded-3xl mr-0 lg:mr-20">
-  <div className="h-px bg-customGray my-4 mx-4"></div>
-  <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:mt-10">
-    <div className="flex flex-col justify text-lg">
-      <p className='lg:font-roboto  lg:text-lg lg:ml-20 lg:font-medium text-start ml-20'>Contact Us <FaPhone className="inline-block ml-4" /></p>
-      <p className='font-lato font-extralight lg:ml-20 text-lg mt-2 text-start ml-20'>+91852741963</p>
-    </div>
-    <div className="flex flex-col justify">
-      <p className='font-roboto ml-20 text-left text-lg font-medium'>Reach Us <FaMapMarkerAlt className="inline-block ml-2" /></p>
-      <p className='font-lato font-extralight text-lg mt-2 leading-8 text-left ml-20'>Garuda Bhive Workspace,kuvempu bus station,Bengalore Karnataka-574369</p>
-    </div>
-    <div className="flex flex-col justify">   
-      <p className='font-roboto lg:ml-40 text-lg text-left font-medium ml-20'>Mail Us<FaEnvelope className="inline-block ml-4" /></p>
-      <p className='font-lato font-extralight lg:ml-40 text-lg mt-2 text-left ml-20'>stickyhrgmail.com</p>
-    </div>
-    <div className="flex  lg:flex-wrap justify-end lg:justify-end gap-1 lg:mr-20  mt-8">
-      <FaXTwitter className="text-white text-3xl mx-4" />
-      <FontAwesomeIcon icon={faYoutube} className="text-white text-3xl mx-4" />
-      <FontAwesomeIcon icon={faFacebook} className="text-white text-3xl mx-4" />
-      <FontAwesomeIcon icon={faInstagram} className="text-white text-3xl mx-4" />
-      <FontAwesomeIcon icon={faLinkedin} className="text-white text-3xl mx-4" />
-    </div>
-  </div>
-</div>
-
-     
+      </div>
 
       <div className="h-px bg-customGray my-4 mx-4"></div>
 
@@ -199,8 +210,6 @@ const Footer = () => {
           ))}
         </div>
       </div>
-
-      
 
       {/* Footer */}
       <div className="my-8 mb-0">
